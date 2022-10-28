@@ -1,0 +1,75 @@
+# definindo a pasta de trabalho
+setwd ("C:/Users/mycri/Desktop/Analytics_Engineer/PowerBI/Estatistica_basica_R/6-Vendas")
+
+# carregando o dataset
+vendas <- read.csv("Vendas.csv")
+
+#resumo do dataset
+View(vendas)
+str(vendas)
+summary(vendas$Valor)
+summary(vendas$Custo)
+
+# média
+?mean
+mean(vendas$Valor)
+mean(vendas$Custo)
+
+# média ponderada
+?weighted.mean
+weighted.mean(vendas$Valor, w = vendas$Custo)
+
+# mediana
+median(vendas$Valor)
+median(vendas$Custo)
+
+# moda
+# criando uma função
+moda <- function(v) {
+  valor_unico <- unique(v)
+  valor_unico[which.max(tabulate(match(v, valor_unico)))]
+}
+
+# obtendo a moda
+resultado <- moda(vendas$Valor)
+print(resultado)
+
+resultado_custo <- moda(vendas$Custo)
+print(resultado_custo)
+
+# criando gráfico de média de valor por estado com ggplot2
+install.packages("ggplot2")
+library(ggplot2)
+
+# criando gráfico
+ggplot(vendas) +
+  stat_summary(aes(x = Estado,
+                   y = Valor),
+               fun = mean,
+               geom = "bar",
+               fill = "lightgreen",
+               col = "grey50") +
+  labs(title = "Média de valor por estado")
+
+# variância
+var(vendas$Valor)
+
+# desvio padrão
+sd(vendas$Valor)
+
+# Resumo dos dados
+head(vendas)
+tail(vendas)
+
+# medidas de tendência central
+summary(vendas$Valor)
+summary(vendas[c('Valor', 'Custo')])
+
+# explorando variáveis numéricas
+quantile(vendas$Valor)
+quantile(vendas$Valor, probs = c(0.01, 0.99))
+quantile(vendas$Valor, seq(from = 0, to = 1, by = 0.20))
+IQR(vendas$Valor) #diferença entre Q3 e Q1
+range(vendas$Valor)
+diff(range(vendas$Valor))
+
